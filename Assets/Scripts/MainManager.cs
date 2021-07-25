@@ -62,10 +62,6 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         UIMainScene.Instance.UpdateScore(m_Points);
-        if (m_Points > ScoreManager.Instance.GetHighestScore())
-        {
-            ScoreManager.Instance.SaveHighScore();
-        }
     }
 
     public void GameOver()

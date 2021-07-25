@@ -1,12 +1,12 @@
-
 using UnityEngine;
+using System.IO;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
     public string PlayerName;
     public int Score = 0;
-    private HighScore HighScores;
+    public PlayerScore HighScores = new PlayerScore("", 0);
 
     private void Awake()
     {
@@ -19,40 +19,59 @@ public class ScoreManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         
-        // TODO load high scores from persistant source
         LoadHighScore();
     }
-    
+
     [System.Serializable]
-    class HighScore
+    public struct PlayerScore
     {
         public string Name;
-        public int Score = 0;
+        public int Score; 
+
+        public PlayerScore(string name, int score)
+        {
+            Name = name;
+            Score = score;
+        }
+
+        public override string ToString()
+        {
+            return $"[PlayerScore]: Name={Name}, Score={Score}";
+        }
+    }
+
+    [System.Serializable]
+    class SaveData
+    {
+        public PlayerScore PlayerScore;
     }
 
     public void SaveHighScore()
     {
-        // TODO save high scores to persistent storage
-        HighScores.Name = PlayerName;
-        HighScores.Score = Score;
+        SaveData data = new SaveData();
+        data.PlayerScore = HighScores;
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 
     public void LoadHighScore()
     {
-        // TODO load from persistent storage
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            HighScores = data.PlayerScore;
+        }
+    }
 
-        HighScores = new HighScore();
-        HighScores.Name = PlayerName;
-        HighScores.Score = Score;
+    public string GetHighScoreText()
+    {
+        return $"High Score: {HighScores.Name} {HighScores.Score}";
     }
 
     public int GetHighestScore()
     {
         return HighScores.Score;
-    }
-
-    public string GetHighestScorePlayerName()
-    {
-        return HighScores.Name;
     }
 }

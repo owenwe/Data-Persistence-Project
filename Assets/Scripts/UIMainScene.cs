@@ -23,7 +23,7 @@ public class UIMainScene : MonoBehaviour
 
     public void UpdateHighScore()
     {
-        HighScoreText.text = $"High Score: {ScoreManager.Instance.GetHighestScorePlayerName()} {ScoreManager.Instance.GetHighestScore()}";
+        HighScoreText.text = ScoreManager.Instance.GetHighScoreText();
     }
 
     public void UpdateScore(int points)
@@ -32,7 +32,9 @@ public class UIMainScene : MonoBehaviour
         ScoreManager.Instance.Score = points;
         if (points > ScoreManager.Instance.GetHighestScore())
         {
-            HighScoreText.text = $"High Score: {ScoreManager.Instance.PlayerName} {points}";
+            ScoreManager.Instance.HighScores.Name = ScoreManager.Instance.PlayerName;
+            ScoreManager.Instance.HighScores.Score = ScoreManager.Instance.Score;
+            HighScoreText.text = ScoreManager.Instance.GetHighScoreText();
         }
     }
 
