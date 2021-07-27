@@ -67,6 +67,8 @@ public class MainManager : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
+        // check if the player's score needs to be added to the high scores array
+        ScoreManager.Instance.CheckPlayerScore();
         UIMainScene.Instance.GameOverText.SetActive(true);
         UIMainScene.Instance.MainMenuButton.SetActive(true);
     }

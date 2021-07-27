@@ -29,12 +29,13 @@ public class UIMainScene : MonoBehaviour
     public void UpdateScore(int points)
     {
         ScoreText.text = $"Score: {points}";
-        ScoreManager.Instance.Score = points;
+        ScoreManager.Instance.score = points;
+        
+        // check if current score beats the high score
         if (points > ScoreManager.Instance.GetHighestScore())
         {
-            ScoreManager.Instance.HighScores.Name = ScoreManager.Instance.PlayerName;
-            ScoreManager.Instance.HighScores.Score = ScoreManager.Instance.Score;
-            HighScoreText.text = ScoreManager.Instance.GetHighScoreText();
+            // update high score text to current player
+            HighScoreText.text = $"High Score: {ScoreManager.Instance.playerName} {points}";
         }
     }
 

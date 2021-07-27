@@ -9,8 +9,9 @@ public class MenuUIHandler : MonoBehaviour
     public Text highScoreText;
     public void StartGame()
     {
-        if (ScoreManager.Instance.PlayerName.Length > 0)
+        if (ScoreManager.Instance.playerName.Length > 0)
         {
+            ScoreManager.Instance.NewPlayer();
             SceneManager.LoadScene(1);
         }
     }
@@ -27,11 +28,16 @@ public class MenuUIHandler : MonoBehaviour
         #else
             Application.Quit();
         #endif
-        ScoreManager.Instance.SaveHighScore();
+        ScoreManager.Instance.SaveHighScores();
     }
 
     public void PlayerNameUpdate(string inputValue)
     {
-        ScoreManager.Instance.PlayerName = inputValue.Trim();
+        ScoreManager.Instance.playerName = inputValue.Trim();
+    }
+
+    public void GoToHighScores()
+    {
+        SceneManager.LoadScene(2);
     }
 }
